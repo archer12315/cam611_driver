@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="ns" default="espros_cam611"/>
+  <arg name="nn" default="frame"/>
+  <arg name="respawn" default="false"/>
+  <arg name="port_name" default="/dev/ttyUSB0"/>
+  <arg name="image_type" default="1"/>
+  <arg name="frame_rate" default="15"/>
+  <arg name="start_stream" default="false"/>
+  <arg name="trigger_single_shot" default="false"/>
+  <arg name="integration_time_tof"  default="200"/>
+  <arg name="kalman_factor"   default="1000"/>
+  <arg name="kalman_threshold" default="3000"/>
+
+  <group ns="$(arg ns)">
+    <node pkg="espros_cam611" type="cam611_frame" name="$(arg nn)" output="screen" respawn="$(arg respawn)">
+      <param name="port_name" value="$(arg port_name)"/>
+      <param name="image_type" value="$(arg image_type)"/>
+      <param name="frame_rate" value="$(arg frame_rate)"/>
+      <param name="start_stream" value="$(arg start_stream)"/>
+      <param name="trigger_single_shot" value="$(arg trigger_single_shot)"/>
+      <param name="integration_time_tof" value="$(arg integration_time_tof)"/>
+      <param name="kalman_factor" value="$(arg kalman_factor)"/>
+      <param name="kalman_threshold" value="$(arg kalman_threshold)"/>
+    </node>
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find espros_cam611)/rviz/cam611_frame.rviz" > </node>
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" > </node>
+  </group>
+
+</launch>

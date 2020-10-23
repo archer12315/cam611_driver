@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="ns" default="espros_tof_cam611"/>
+  <arg name="nn" default="range"/>
+  <arg name="respawn" default="false"/>
+  <arg name="port_name" default="/dev/ttyUSB0"/>
+  <arg name="range_data_type" default="1"/>
+  <arg name="frame_rate" default="15"/>
+  <arg name="start_stream" default="false"/>
+  <arg name="trigger_single_shot" default="false"/>
+  <arg name="auto_integration_time" default="true"/>
+  <arg name="integration_time_tof"  default="200"/>
+  <arg name="kalman_factor"   default="1000"/>
+  <arg name="kalman_threshold" default="3000"/>
+  <arg name="modulation_frequency" default="1"/>
+
+
+  <group ns="$(arg ns)">
+    <node pkg="espros_cam611" type="cam611_range" name="$(arg nn)" output="screen" respawn="$(arg respawn)">
+      <param name="port_name" value="$(arg port_name)"/>
+      <param name="range_data_type" value="$(arg range_data_type)"/>
+      <param name="frame_rate" value="$(arg frame_rate)"/>
+      <param name="start_stream" value="$(arg start_stream)"/>
+      <param name="trigger_single_shot" value="$(arg trigger_single_shot)"/>
+      <param name="auto_integration_time" value="$(arg auto_integration_time)"/>
+      <param name="integration_time_tof" value="$(arg integration_time_tof)"/>
+      <param name="kalman_factor" value="$(arg kalman_factor)"/>
+      <param name="kalman_threshold" value="$(arg kalman_threshold)"/>
+      <param name="modulation_frequency" value="$(arg modulation_frequency)"/>
+    </node>
+
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" > </node>
+    <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot" args = "/espros_cam611/range/distance_range /espros_cam611/range/amplitude_range" > </node>
+
+  </group>
+
+</launch>
